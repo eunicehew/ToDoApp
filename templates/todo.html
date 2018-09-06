@@ -1,58 +1,77 @@
 <!DOCTYPE html>
 <html>
-<script>
-    var username = '{{username}}'
-    // function that makes API call to add an item
-    function addItem(e) {
-        let item = document.querySelector('.new-todo');
-        fetch('/add-todo', {
-            method: 'post',
-            body: JSON.stringify({ 
-            id: `item-${Date.now()}`,
-            value: item.value,
-            completed: 0
-            })
-        })
-        .then(resp => {
-            // empty form input once a response is received
-            item.value = ""
-        });
+<!-- <script>
+    function myFunction() {
+        var username = '{{username}}'
+        var data = '{{data}}'
+        var dataLength = data.length;
+        document.getElementById("myText").innerHTML = username;
+        let html;
+        for (var i = 0; i < dataLength; i++){
+            appendToList(data[i])
+        }
+        document.getElementById("ToDo").innerHTML = username;
     }
-
-    // function that makes API call to remove an item
-    function removeItem(id) {
-        fetch(`/remove-todo/${username}/${id}`);
-    }
-
-    function toggleComplete(elem) {
-        let id = elem.dataset.id,
-            completed = (elem.dataset.completed == "1" ? "0" : "1");
-        fetch(`/update-todo/${username}/${id}/${completed}`, {
-        method: 'post'
-        });
-    }
-
-    // helper function to append new ToDo item to current ToDo list
     function appendToList(data) {
-        let html = 
-        `<li id="${data[0]}">
-            <div class="view">
-            <input class="toggle" type="checkbox" onclick="toggleComplete(this)>
-            <label>${data[0]}</label>
-            <button class="destroy" onclick="removeItem('${data[0]}')"></button>
-            </div>
-        </li>`;
-        let list = document.querySelector(".todo-list")
-        list.innerHTML += html;
+        var ul = document.getElementById("todo-list");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(data));
+        ul.appendChild(li);
     };
-</script>
-
+</script> -->
 <head>
     <title> To Do Page </title>
 </head>
 
 <body>
     <h1>To Do List </h1>
+    <!-- <ul id="todo-list"></ul> -->
+    <div>
+        <form action = "/add-todo", method="post">
+            Add new item: <input type="text" name = "add" value="enter item"> 
+            <input type = hidden value = {{request.form.username}} name = username>
+            <input type = "submit" value = "Submit"> 
+        </form>
+    </div>
+    <div>
+        <ul>
+            {% for each in todolist %}
+                <li> <p>each.item</p></li>
+            <form action = "/remove-todo">
+                Delete: <input type="submit" name = "remove" value="Remove">
+                <input type = hidden value = {{request.form.username}} name = username>
+                <!-- <input type = "submit" value = "Submit"> {{request.form.remove}} -->
+            </form>
+            <form action = "/complete" method="post">
+                Completed: <input type = "checkbox" value = "{{request.form.complete}}"> 
+                <input type = hidden value = {{request.form.username}} name = username>
+            </form>
+            {% endfor %} 
+        </ul>
+    </div>
+    <!-- <form action = "/add-todo" method = "post">
+        Add new item: <input type = "text" name = "add" value="enter item">
+        <input type = "submit" value = "Submit">
+    </form> 
+    <ul>
+        {% for each in todolist %}
+            <li> <p>each.item</p></li>
+            <form action = "/complete" method = "post">
+                <input type = "checkbox" class = complete>
+            </form>
+            <form action = "/remove-todo" method = "post" class=delete>
+                <input type = hidden value = {{item}} name = item_delete>
+                <input type = submit> 
+            </form>
+            {% endfor %} 
+        </ul>-->
+
+
+    <br><br><br>
+    <form action="/logout">
+        <input type="submit" value="Logout" />
+    </form> 
+
 </body>
 
 
