@@ -32,20 +32,18 @@ def close_connection(exception):
         db.close()
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def login():
     cursor = g.db.cursor()
     if request.method == 'POST':
         username = request.form['username']
-        # print(username)
         try:
             cursor.execute("SELECT * FROM " + username)
             g.db.commit()
             data = cursor.fetchall()
+            print(data)
+            return render_template ('/todo.html', username=username, data = data)
         except:
-
-        if not data:
             cursor.execute("INSERT INTO user_list (name, tb) VALUES ('" + username+"', '"+username+"')")
             g.db.commit()
             cursor.execute("""CREATE TABLE IF NOT EXISTS """ + username + """ (
@@ -56,24 +54,6 @@ def login():
             g.db.commit()
             data=cursor.fetchall() 
             return render_template ('/todo.html', username=username, data = data)
-        else:
-            # cursor.execute("SELECT * FROM user_list WHERE name = " + username)
-            #reroute to user
-        # data = cursor.fetchall()
-            # print(data)
-        # except:
-        #     cursor.execute("INSERT INTO user_list (name, tb) VALUES ('" + username+"', '"+username+"')")
-        #     g.db.commit()
-        #     cursor.execute("""CREATE TABLE IF NOT EXISTS """ + username + """ (
-        #         item text,
-        #         status integer
-        #         )"""
-        #     )
-        #     g.db.commit()
-        #     data=cursor.fetchall() 
-        #     #reroute to user
-        #     return render_template ('/todo.html', username=username, data = data)
-            return render_template ('/todo.html', username=username, data= data)
     return render_template('signin.html')
 
 

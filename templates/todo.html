@@ -4,6 +4,9 @@
     function myFunction() {
         var username = '{{username}}'
         var data = '{{data}}'
+        console.log(typeof data)
+        var str = JSON.stringify(data)
+        console.log(data)
         var dataLength = data.length;
         document.getElementById("myText").innerHTML = username;
         let html;
@@ -12,6 +15,13 @@
         }
         document.getElementById("ToDo").innerHTML = username;
     }
+    // function clean(item) {
+    //     var todolist =[]
+    //     for (var i = 1; i < item.length-1; i++){
+    //         if 
+    //     }
+
+    // }
     function appendToList(data) {
         var ul = document.getElementById("todo-list");
         var li = document.createElement("li");
