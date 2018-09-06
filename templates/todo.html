@@ -15,13 +15,7 @@
         }
         document.getElementById("ToDo").innerHTML = username;
     }
-    // function clean(item) {
-    //     var todolist =[]
-    //     for (var i = 1; i < item.length-1; i++){
-    //         if 
-    //     }
-
-    // }
+    
     function appendToList(data) {
         var ul = document.getElementById("todo-list");
         var li = document.createElement("li");
@@ -37,14 +31,31 @@
     <h1>To Do List </h1>
     <ul id="todo-list"></ul>
     <p> <span id = "myText"></span></p>
-    <div>
+    <!-- {% for each in todolist %} -->
+        <!-- <li> <p>each.item</p></li> -->
+
+       
+    <!-- {% endfor %}  -->
+    <!-- <ul id="todo-list"></ul>
+    <p> <span id = "myText"></span></p> -->
+    <!-- <div> -->
         <form action = "/add-todo", method="post">
             Add new item: <input type="text" name = "add" value="enter item"> 
             <input type = hidden value = {{request.form.username}} name = username>
             <input type = "submit" value = "Submit"> 
         </form>
-    </div>
-    <div>
+        <form action = "/remove-todo", method="post">
+            Delete: <input type="text" name = "remove" value="enter item">  
+            <input type = hidden value = {{request.form.username}} name = username>
+            <input type="submit" name = "remove" value="Submit">
+        </form>
+        <form action = "/complete" method="post">
+            Completed: <input type = "text" value = "enter item"> 
+            <input type = hidden value = {{request.form.username}} name = username>
+            <input type="submit" name = "complete" value="Completed">
+        </form>
+    <!-- </div> -->
+    <!-- <div>
         <ul>
             {% for each in todolist %}
                 <li> <p>each.item</p></li>
@@ -58,7 +69,7 @@
             </form>
             {% endfor %} 
         </ul>
-    </div>
+    </div> -->
   
 
     <br><br><br>

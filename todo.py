@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, g
 import sqlite3
-import json
 
 app = Flask(__name__)
 
@@ -60,7 +59,7 @@ def login():
     return render_template('signin.html')
 
 def getTodo(d):
-    td = [dict((x, y) for x, y in d)] 
+    td = dict((x, y) for x, y in d)
     k = []
     for key, value in td.iteritems():
         k.append(key)
@@ -104,9 +103,12 @@ def removeTodo():
     username = request.form['username']
     itemId = request.form['remove']
     cursor = g.db.cursor()
-    cursor.execute("DELETE FROM " + username + " WHERE item = '" + item_id + "'")
+    cursor.execute("DELETE FROM " + username + " WHERE item = '" + itemId +"'")
     g.db.commit()
-    return render_template('/todo.html', username=username)
+    cursor.execute("SELECT * FROM " + username) #gets todolist from user 
+    g.db.commit()
+    data = cursor.fetchall()        
+    return render_template('/todo.html', username=username, data = data)
 
 @app.route('/update-todo', methods = ['POST'])
 def updateTodo():
