@@ -3,7 +3,7 @@
 <script>
     function myFunction() {
         var username = '{{username}}'
-        var data = '{{data}}'
+        var data = '{{data}}'.split(", ")
         console.log(typeof data)
         var str = JSON.stringify(data)
         console.log(data)

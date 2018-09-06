@@ -13,7 +13,7 @@ username = 'eunicehew'
 #                 )"""
 #               )
 
-# cursor.execute(""" INSERT INTO """ +username +""" (item, status) VALUES ('dodododo', 1) """)
+cursor.execute(""" INSERT INTO """ +username +""" (item, status) VALUES ('dodododo', 0) """)
 
 cursor.execute("SELECT * FROM " + username)
 print(cursor.fetchall())

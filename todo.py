@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, g
 import sqlite3
+import json
 
 app = Flask(__name__)
 
@@ -8,8 +9,8 @@ def dbConn():
     cursor = conn.cursor()
     try:
         cursor.execute("""CREATE TABLE user_list(
-                        name varchar(20),
-                        tb varchar(20)
+                        name text,
+                        tb text
                         )"""
                     )
         conn.commit()
@@ -19,7 +20,7 @@ def dbConn():
         print('Userlist Exists')
     return None
 
-#dbConn()
+# dbConn()
 
 @app.before_request
 def before_request():
@@ -41,6 +42,8 @@ def login():
             cursor.execute("SELECT * FROM " + username)
             g.db.commit()
             data = cursor.fetchall()
+            # data =data.encode('ascii')
+            data = getTodo(data)
             print(data)
             return render_template ('/todo.html', username=username, data = data)
         except:
@@ -56,6 +59,12 @@ def login():
             return render_template ('/todo.html', username=username, data = data)
     return render_template('signin.html')
 
+def getTodo(d):
+    td = [dict((x, y) for x, y in d)] 
+    k = []
+    for key, value in td.iteritems():
+        k.append(key)
+    return k
 
 @app.route('/todo', methods=['GET', 'POST'])
 def todo():    #how to make for specific user and table????
