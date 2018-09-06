@@ -3,19 +3,6 @@ import sqlite3
 
 app = Flask(__name__)
 
-#  cursor.execute("""CREATE TABLE user_list(
-#                 name varchar(20),
-#                 tb varchar(20)
-#                 )"""
-#               )
-#  cursor.execute("""CREATE TABLE todo_list(
-#                 item varchar(20),
-#                 status integer
-#                 )"""
-#               )
-#   conn.commit()
-
-
 def dbConn():
     conn = sqlite3.connect("todo.db")
     cursor = conn.cursor()
@@ -38,18 +25,11 @@ def dbConn():
 def before_request():
     g.db = sqlite3.connect("todo.db")
 
-# @app.teardown_request
-# def teardown_request():
-#     if hasattr(g, 'db'):
-#         g.db.close()
-
-
-
-# def dict_factory(cursor, row):
-#     d = {}
-#     for idx, col in enumerate(cursor.description):
-#         d[col[0]] = row[idx]
-#     return d
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 
 
@@ -58,18 +38,14 @@ def login():
     cursor = g.db.cursor()
     if request.method == 'POST':
         username = request.form['username']
-        try: #not doing anything
-            cursor.execute("SELECT * FROM user_list WHERE name = " + username)
-            #reroute to user
+        # print(username)
+        try:
+            cursor.execute("SELECT * FROM " + username)
+            g.db.commit()
             data = cursor.fetchall()
-            # print(data)
-            # g.db.row_factory = sqlite3.Row
-            # g.db.commit()
-            # todolist = g.db.row_factory
-            # data = cursor.fetchall() 
-            # print(data)
-            return render_template ('/todo.html', username=username, data= data)
         except:
+
+        if not data:
             cursor.execute("INSERT INTO user_list (name, tb) VALUES ('" + username+"', '"+username+"')")
             g.db.commit()
             cursor.execute("""CREATE TABLE IF NOT EXISTS """ + username + """ (
@@ -78,14 +54,26 @@ def login():
                 )"""
             )
             g.db.commit()
-            data=[]
-            # g.db.row_factory = sqlite3.Row
-            # g.db.commit()
-            # todolist = g.db.row_factory
-            # data = cursor.fetchone() 
-            # print(data)
-            #reroute to user
+            data=cursor.fetchall() 
             return render_template ('/todo.html', username=username, data = data)
+        else:
+            # cursor.execute("SELECT * FROM user_list WHERE name = " + username)
+            #reroute to user
+        # data = cursor.fetchall()
+            # print(data)
+        # except:
+        #     cursor.execute("INSERT INTO user_list (name, tb) VALUES ('" + username+"', '"+username+"')")
+        #     g.db.commit()
+        #     cursor.execute("""CREATE TABLE IF NOT EXISTS """ + username + """ (
+        #         item text,
+        #         status integer
+        #         )"""
+        #     )
+        #     g.db.commit()
+        #     data=cursor.fetchall() 
+        #     #reroute to user
+        #     return render_template ('/todo.html', username=username, data = data)
+            return render_template ('/todo.html', username=username, data= data)
     return render_template('signin.html')
 
 

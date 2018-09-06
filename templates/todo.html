@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- <script>
+<script>
     function myFunction() {
         var username = '{{username}}'
         var data = '{{data}}'
@@ -18,14 +18,15 @@
         li.appendChild(document.createTextNode(data));
         ul.appendChild(li);
     };
-</script> -->
+</script>
 <head>
     <title> To Do Page </title>
 </head>
 
-<body>
+<body onload="myFunction()">
     <h1>To Do List </h1>
-    <!-- <ul id="todo-list"></ul> -->
+    <ul id="todo-list"></ul>
+    <p> <span id = "myText"></span></p>
     <div>
         <form action = "/add-todo", method="post">
             Add new item: <input type="text" name = "add" value="enter item"> 
@@ -40,7 +41,6 @@
             <form action = "/remove-todo">
                 Delete: <input type="submit" name = "remove" value="Remove">
                 <input type = hidden value = {{request.form.username}} name = username>
-                <!-- <input type = "submit" value = "Submit"> {{request.form.remove}} -->
             </form>
             <form action = "/complete" method="post">
                 Completed: <input type = "checkbox" value = "{{request.form.complete}}"> 
@@ -49,23 +49,7 @@
             {% endfor %} 
         </ul>
     </div>
-    <!-- <form action = "/add-todo" method = "post">
-        Add new item: <input type = "text" name = "add" value="enter item">
-        <input type = "submit" value = "Submit">
-    </form> 
-    <ul>
-        {% for each in todolist %}
-            <li> <p>each.item</p></li>
-            <form action = "/complete" method = "post">
-                <input type = "checkbox" class = complete>
-            </form>
-            <form action = "/remove-todo" method = "post" class=delete>
-                <input type = hidden value = {{item}} name = item_delete>
-                <input type = submit> 
-            </form>
-            {% endfor %} 
-        </ul>-->
-
+  
 
     <br><br><br>
     <form action="/logout">

@@ -4,7 +4,7 @@ import sqlite3
 
 conn = sqlite3.connect("todo.db")
 cursor = conn.cursor()
-username = 'dodo'
+username = 'eunicehew'
 #cursor.execute("INSERT INTO user_list (name, tb) VALUES ('two', 'twotable') ")
 # conn.commit()
 # cursor.execute("""CREATE TABLE """ + username + """ (
@@ -13,7 +13,7 @@ username = 'dodo'
 #                 )"""
 #               )
 
-cursor.execute(""" INSERT INTO """ +username +""" (item, status) VALUES ('dodododo', 1) """)
+# cursor.execute(""" INSERT INTO """ +username +""" (item, status) VALUES ('dodododo', 1) """)
 
 cursor.execute("SELECT * FROM " + username)
 print(cursor.fetchall())
@@ -22,3 +22,16 @@ print(cursor.fetchall())
 conn.commit()
 
 conn.close()
+
+
+#  cursor.execute("""CREATE TABLE user_list(
+#                 name varchar(20),
+#                 tb varchar(20)
+#                 )"""
+#               )
+#  cursor.execute("""CREATE TABLE todo_list(
+#                 item varchar(20),
+#                 status integer
+#                 )"""
+#               )
+#   conn.commit()
