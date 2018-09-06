@@ -3,16 +3,18 @@
 <script>
     function myFunction() {
         var username = '{{username}}'
-        var data = '{{data}}'.split(", ")
+        var data = '{{data|tojson}}'.split(", ")
         console.log(typeof data)
         var str = JSON.stringify(data)
-        console.log(data)
+        console.log(str)
         var dataLength = data.length;
         document.getElementById("myText").innerHTML = username;
         let html;
         for (var i = 0; i < dataLength; i++){
             appendToList(data[i])
         }
+        // appendToList(data[0])
+
         document.getElementById("ToDo").innerHTML = username;
     }
     
@@ -31,14 +33,7 @@
     <h1>To Do List </h1>
     <ul id="todo-list"></ul>
     <p> <span id = "myText"></span></p>
-    <!-- {% for each in todolist %} -->
-        <!-- <li> <p>each.item</p></li> -->
 
-       
-    <!-- {% endfor %}  -->
-    <!-- <ul id="todo-list"></ul>
-    <p> <span id = "myText"></span></p> -->
-    <!-- <div> -->
         <form action = "/add-todo", method="post">
             Add new item: <input type="text" name = "add" value="enter item"> 
             <input type = hidden value = {{request.form.username}} name = username>
@@ -49,27 +44,11 @@
             <input type = hidden value = {{request.form.username}} name = username>
             <input type="submit" name = "remove" value="Submit">
         </form>
-        <form action = "/complete" method="post">
+        <form action = "/update-todo" method="post">
             Completed: <input type = "text" value = "enter item"> 
             <input type = hidden value = {{request.form.username}} name = username>
-            <input type="submit" name = "complete" value="Completed">
+            <input type="submit" name = "complete" value="Submit">
         </form>
-    <!-- </div> -->
-    <!-- <div>
-        <ul>
-            {% for each in todolist %}
-                <li> <p>each.item</p></li>
-            <form action = "/remove-todo">
-                Delete: <input type="submit" name = "remove" value="Remove">
-                <input type = hidden value = {{request.form.username}} name = username>
-            </form>
-            <form action = "/complete" method="post">
-                Completed: <input type = "checkbox" value = "{{request.form.complete}}"> 
-                <input type = hidden value = {{request.form.username}} name = username>
-            </form>
-            {% endfor %} 
-        </ul>
-    </div> -->
   
 
     <br><br><br>

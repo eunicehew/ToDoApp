@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, g
 import sqlite3
+import json
 
 app = Flask(__name__)
 
@@ -41,8 +42,10 @@ def login():
             cursor.execute("SELECT * FROM " + username)
             g.db.commit()
             data = cursor.fetchall()
-            # data =data.encode('ascii')
             data = getTodo(data)
+            data = json.dumps(data)
+            for x in data:
+                x.encode('utf-8')
             print(data)
             return render_template ('/todo.html', username=username, data = data)
         except:
