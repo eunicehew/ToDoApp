@@ -8,34 +8,39 @@
         var str = JSON.stringify(data)
         console.log(str)
         var dataLength = data.length;
-        document.getElementById("myText").innerHTML = username;
+        // document.getElementById("myText").innerHTML = username;
         let html;
         for (var i = 0; i < dataLength; i++){
-            appendToList(data[i])
+            appendToList(data[i], false)
         }
         // appendToList(data[0])
 
-        document.getElementById("ToDo").innerHTML = username;
+        // document.getElementById("ToDo").innerHTML = username;
     }
     
-    function appendToList(data) {
+    function appendToList(data, complete) {
         var ul = document.getElementById("todo-list");
         var li = document.createElement("li");
         li.appendChild(document.createTextNode(data));
         ul.appendChild(li);
-        var checkbox = document.createElement('input');
-        checkbox.type = "checkbox";
-        checkbox.name = "name";
-        checkbox.value = "value";
-        checkbox.id = "id";
+        // var checkbox = document.createElement('input');
+        // checkbox.type = "checkbox";
+        // checkbox.name = "name";
+        // checkbox.value = "value";
+        // checkbox.id = "id";
 
-        var label = document.createElement('label')
-        label.htmlFor = "id";
-        label.appendChild(document.createTextNode('Completed'));
-        ul.appendChild(checkbox);
-        ul.appendChild(label);
+        // checkbox.checked = complete;
+
+        // var label = document.createElement('label')
+        // label.htmlFor = "id";
+        // label.appendChild(document.createTextNode('Completed'));
+        // ul.appendChild(checkbox);
+        // ul.appendChild(label);
 
     };
+
+ 
+
 </script>
 <head>
     <title> To Do Page </title>
@@ -43,6 +48,7 @@
 
 <body onload="myFunction()">
     <h1>To Do List </h1>
+    <p> 1 = complete; 0 = incomplete</p>
     <ul id="todo-list"></ul>
     <p> <span id = "myText"></span></p>
 
@@ -57,9 +63,9 @@
             <input type="submit" name = "remove" value="Submit">
         </form>
         <form action = "/update-todo" method="post">
-            Completed: <input type = "text" value = "enter item"> 
+            Completed: <input type = "text" name = update value = "enter item"> 
             <input type = hidden value = {{request.form.username}} name = username>
-            <input type="submit" name = "complete" value="Submit">
+            <input type="submit" name = "update" value="Submit">
         </form>
   
 

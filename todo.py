@@ -43,9 +43,9 @@ def login():
             g.db.commit()
             data = cursor.fetchall()
             data = getTodo(data)
-            data = json.dumps(data)
-            for x in data:
-                x.encode('utf-8')
+            # data = json.dumps(data)
+            # for x in data:
+            #     x.encode('utf-8')
             print(data)
             return render_template ('/todo.html', username=username, data = data)
         except:
@@ -57,29 +57,32 @@ def login():
                 )"""
             )
             g.db.commit()
-            data=cursor.fetchall() 
+            data = cursor.fetchall()
+            data = getTodo(data)            
             return render_template ('/todo.html', username=username, data = data)
     return render_template('signin.html')
 
 def getTodo(d):
     td = dict((x, y) for x, y in d)
-    k = []
-    for key, value in td.iteritems():
-        k.append(key)
-    return k
+    # k = []
+    # v = []
+    # for key, value in td.iteritems():
+    #     k.append(key)
+    #     v.append(value)
+    return td
 
-@app.route('/todo', methods=['GET', 'POST'])
-def todo():    #how to make for specific user and table????
-    cursor = g.db.cursor()
-    username = request.form['username']
-    itemId = request.form['add']
-    cursor = g.db.cursor()
-    g.db.row_factory = sqlite3.Row
-    g.db.commit()
-    todolist = g.db.row_factory
+# @app.route('/todo', methods=['GET', 'POST'])
+# def todo():    #how to make for specific user and table????
+#     cursor = g.db.cursor()
+#     username = request.form['username']
+#     itemId = request.form['add']
+#     cursor = g.db.cursor()
+#     g.db.row_factory = sqlite3.Row
+#     g.db.commit()
+#     todolist = g.db.row_factory
 
-    # todolist = dict(zip(item, status))
-    return render_template('/todo.html', username=username, data = data, todolist=todolist)
+#     # todolist = dict(zip(item, status))
+#     return render_template('/todo.html', username=username, data = data, todolist=todolist)
 
 
 @app.route('/add-todo', methods=['GET', 'POST'])
@@ -96,7 +99,7 @@ def addTodo():
         # cursor.execute("DELETE FROM " + username + " WHERE status = '0'")
         cursor.execute("SELECT * FROM " + username) #gets todolist from user 
         g.db.commit()
-        data = cursor.fetchall() 
+        data = getTodo(cursor.fetchall()) 
         # print(data)
         return render_template('/todo.html', username=username, data = data)
     return EnvironmentError
@@ -110,25 +113,27 @@ def removeTodo():
     g.db.commit()
     cursor.execute("SELECT * FROM " + username) #gets todolist from user 
     g.db.commit()
-    data = cursor.fetchall()        
+    data = getTodo(cursor.fetchall())       
     return render_template('/todo.html', username=username, data = data)
 
 @app.route('/update-todo', methods = ['POST'])
 def updateTodo():
     username = request.form['username']
-    itemId = request.form['complete']
+    itemId = request.form['update']
     cursor = g.db.cursor()
-    cursor.execute("SELECT " + status + " FROM " + username + " WHERE item = '" + item_id + "'")
+    cursor.execute("SELECT * FROM " + username + " WHERE item = '" + itemId + "'")
     g.db.commit()
-    currStatus = cursor.fetchone()
-    if currStatus == 1:
-        currStatus = 0
-    else:
-        currStatus = 1
-    cursor.execute("UPDATE " + username + " SET status = '" + currStatus + "' WHERE item = '" + item_id + "'")
-    conn.commit()
-    cursor.execute("SELECT * FROM user_list WHERE name = '" + username + "'")
-    data = cursor.fetchall()
+    data = getTodo(cursor.fetchall()) 
+    currStatus = str(data.get(itemId))
+    if currStatus == '1':
+        currStatus = '0'
+    elif currStatus == '0':
+        currStatus = '1'
+    cursor.execute("UPDATE " + username + " SET status = " + currStatus + " WHERE item = '" + itemId + "'")
+    g.db.commit()
+    cursor.execute("SELECT * FROM " + username) #gets todolist from user 
+    g.db.commit()
+    data = getTodo(cursor.fetchall()) 
     return render_template('/todo.html', username=username, data=data)
 
 
